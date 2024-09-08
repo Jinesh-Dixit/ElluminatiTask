@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Service List</string>
+    <string name="home_cleaning">Home cleaning</string>
+    <string name="customize">Customize</string>
+    <string name="view_cart">View Cart</string>
+    <string name="repeat">Repeat</string>
+    <string name="would_you_like_to_repeat_last_customisation">Would You Like To Repeat Last Customisation?</string>
+    <string name="required">Required</string>
+    <string name="please_select_required_field">Please select required field.</string>
+</resources>
