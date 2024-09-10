@@ -2,6 +2,7 @@ package com.example.servicelist.ui.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +34,7 @@ class ServiceAdapter(
 
             chooseTitleSet(value)
 
-            if (value.type == 1) {
+            if (value.isParentAssociate == true) {
                 val singleSelectionAdapter =
                     SingleSelectionAdapter(value.list.sortedBy { it.sequenceNumber }.toList() as ArrayList<ListItem>, mContext) {
                         it.isDefaultSelected = true
@@ -59,9 +60,9 @@ class ServiceAdapter(
     private fun DataViewHolder.chooseTitleSet(
         value: SpecificationsItem
     ) {
-        if (value.type == 1) {
+        if (value.isParentAssociate == true) {
             binding.tvChooseTitle.text = "Choose 1"
-        } else if (value.type == 2) {
+        } else if (value.isAssociated == true) {
             if (value.range == 0 && value.maxRange == 1) {
                 binding.tvChooseTitle.text = "Choose up to 1"
             } else if (value.range == 1 && value.maxRange == 3) {

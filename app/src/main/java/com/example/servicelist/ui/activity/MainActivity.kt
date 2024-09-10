@@ -294,15 +294,15 @@ class MainActivity : AppCompatActivity() {
         typeOneAdapter =
             ServiceAdapter(
                 serviceListViewModel.specifications.sortedBy { it.sequenceNumber }
-                    .filter { it.type == 1 } as ArrayList<SpecificationsItem>,
+                    .filter { it.isParentAssociate == true } as ArrayList<SpecificationsItem>,
                 this
             ) { listItem ->
                 serviceListViewModel.serviceResponse.specifications =
                     specifications.filter { it.modifierId.toString() == listItem.id.toString() && it.type != 1 }
 
                 calculateCardAMount()
-                typeTwoAdapter.setData(serviceListViewModel.serviceResponse.specifications.sortedBy { it.sequenceNumber }
-                    .filter { it.type == 2 } as ArrayList<SpecificationsItem>)
+                typeTwoAdapter.setData(serviceListViewModel.serviceResponse.specifications
+                    .filter { it.isAssociated == true && it.modifierId == listItem.id } as ArrayList<SpecificationsItem>)
             }
 
         bottomSheetServiceCustomizeBinding.rvTypeOne.apply {
@@ -314,8 +314,8 @@ class MainActivity : AppCompatActivity() {
     private fun typeTwoAdapter() {
         typeTwoAdapter =
             ServiceAdapter(
-                serviceListViewModel.serviceResponse.specifications.sortedBy { it.sequenceNumber }
-                    .filter { it.type == 2 } as ArrayList<SpecificationsItem>,
+                serviceListViewModel.serviceResponse.specifications
+                    .filter { it.isAssociated == true } as ArrayList<SpecificationsItem>,
                 this
             ) { listItem ->
                 calculateCardAMount()
