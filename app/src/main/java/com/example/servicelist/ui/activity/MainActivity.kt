@@ -17,6 +17,7 @@ import com.example.servicelist.model.AddCartItem
 import com.example.servicelist.model.ListItem
 import com.example.servicelist.model.ServiceResponse
 import com.example.servicelist.model.SpecificationsItem
+import com.example.servicelist.ui.adapter.ItemListAdapter
 import com.example.servicelist.ui.adapter.ServiceAdapter
 import com.example.servicelist.ui.viewmodel.ServiceListViewModel
 import com.example.servicelist.utils.Utils
@@ -36,8 +37,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var serviceListViewModel: ServiceListViewModel
     private lateinit var serviceResponse: ServiceResponse
     private var specifications: List<SpecificationsItem> = arrayListOf()
-    private lateinit var typeTwoAdapter: ServiceAdapter
-    private lateinit var typeOneAdapter: ServiceAdapter
+    private lateinit var typeTwoAdapter: ItemListAdapter
+    private lateinit var typeOneAdapter: ItemListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -190,7 +191,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addToCartTap() {
-        if (checkIsRequiredSelected()) {
+        /*if (checkIsRequiredSelected()) {
             serviceListViewModel.addToCartItem.add(
                 AddCartItem(
                     ServiceResponse(
@@ -207,7 +208,7 @@ class MainActivity : AppCompatActivity() {
             updateViewAfterCartAdd()
         } else {
             this.toast(getString(R.string.please_select_required_field))
-        }
+        }*/
     }
 
     private fun setFreshDataToView() {
@@ -292,18 +293,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun typeOneAdapter() {
         typeOneAdapter =
-            ServiceAdapter(
+            ItemListAdapter(
                 serviceListViewModel.specifications.sortedBy { it.sequenceNumber }
                     .filter { it.type == 1 } as ArrayList<SpecificationsItem>,
                 this
-            ) { listItem ->
+            )
+            /*{ listItem ->
                 serviceListViewModel.serviceResponse.specifications =
                     specifications.filter { it.modifierId.toString() == listItem.id.toString() && it.type != 1 }
 
                 calculateCardAMount()
                 typeTwoAdapter.setData(serviceListViewModel.serviceResponse.specifications.sortedBy { it.sequenceNumber }
                     .filter { it.type == 2 } as ArrayList<SpecificationsItem>)
-            }
+            }*/
 
         bottomSheetServiceCustomizeBinding.rvTypeOne.apply {
             adapter = typeOneAdapter
@@ -313,13 +315,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun typeTwoAdapter() {
         typeTwoAdapter =
-            ServiceAdapter(
+            ItemListAdapter(
                 serviceListViewModel.serviceResponse.specifications.sortedBy { it.sequenceNumber }
                     .filter { it.type == 2 } as ArrayList<SpecificationsItem>,
                 this
-            ) { listItem ->
+            )
+           /* { listItem ->
                 calculateCardAMount()
-            }
+            }*/
 
         bottomSheetServiceCustomizeBinding.rvTypeTwo.apply {
             adapter = typeTwoAdapter
@@ -359,7 +362,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkIsRequiredSelected(): Boolean {
-        for (i in typeTwoAdapter.specificationsItem) {
+        for (i in typeTwoAdapter.itemList as ArrayList<SpecificationsItem> ) {
             if (i.isRequired) {
                 var isSelected = false
                 for (j in i.list) {
