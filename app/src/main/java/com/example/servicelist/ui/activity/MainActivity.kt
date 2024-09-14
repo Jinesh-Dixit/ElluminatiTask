@@ -18,7 +18,6 @@ import com.example.servicelist.model.ListItem
 import com.example.servicelist.model.ServiceResponse
 import com.example.servicelist.model.SpecificationsItem
 import com.example.servicelist.ui.adapter.ItemListAdapter
-import com.example.servicelist.ui.adapter.ServiceAdapter
 import com.example.servicelist.ui.viewmodel.ServiceListViewModel
 import com.example.servicelist.utils.Utils
 import com.example.servicelist.utils.getAssetJsonData
@@ -191,7 +190,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addToCartTap() {
-        /*if (checkIsRequiredSelected()) {
+        if (checkIsRequiredSelected()) {
             serviceListViewModel.addToCartItem.add(
                 AddCartItem(
                     ServiceResponse(
@@ -199,7 +198,7 @@ class MainActivity : AppCompatActivity() {
                         serviceResponse.price,
                         serviceResponse.name,
                         serviceResponse.id,
-                        typeTwoAdapter.specificationsItem + typeOneAdapter.specificationsItem
+                        typeTwoAdapter.itemList as ArrayList<SpecificationsItem> + typeOneAdapter.itemList as ArrayList<SpecificationsItem>
                     ), onlyPrice() + serviceResponse.price?.toDouble()!!
                 )
 
@@ -208,7 +207,7 @@ class MainActivity : AppCompatActivity() {
             updateViewAfterCartAdd()
         } else {
             this.toast(getString(R.string.please_select_required_field))
-        }*/
+        }
     }
 
     private fun setFreshDataToView() {
@@ -295,37 +294,39 @@ class MainActivity : AppCompatActivity() {
         typeOneAdapter =
             ItemListAdapter(
                 serviceListViewModel.specifications.sortedBy { it.sequenceNumber }
-                    .filter { it.type == 1 } as ArrayList<SpecificationsItem>,
-                this
+                    .filter { it.isParentAssociate == true } as ArrayList<SpecificationsItem>,
+                this,
+                itemClickChild = ::calculateItemAmountChildClick
             )
-            /*{ listItem ->
-                serviceListViewModel.serviceResponse.specifications =
-                    specifications.filter { it.modifierId.toString() == listItem.id.toString() && it.type != 1 }
-
-                calculateCardAMount()
-                typeTwoAdapter.setData(serviceListViewModel.serviceResponse.specifications.sortedBy { it.sequenceNumber }
-                    .filter { it.type == 2 } as ArrayList<SpecificationsItem>)
-            }*/
 
         bottomSheetServiceCustomizeBinding.rvTypeOne.apply {
             adapter = typeOneAdapter
         }
-
     }
 
     private fun typeTwoAdapter() {
         typeTwoAdapter =
             ItemListAdapter(
                 serviceListViewModel.serviceResponse.specifications.sortedBy { it.sequenceNumber }
-                    .filter { it.type == 2 } as ArrayList<SpecificationsItem>,
-                this
+                    .filter { it.isAssociated == true } as ArrayList<SpecificationsItem>,
+                this,
+                itemClickChild = ::calculateItemAmountChildClick
             )
-           /* { listItem ->
-                calculateCardAMount()
-            }*/
 
         bottomSheetServiceCustomizeBinding.rvTypeTwo.apply {
             adapter = typeTwoAdapter
+        }
+    }
+
+    private fun calculateItemAmountChildClick(childItem : ListItem,isSingleClick : Boolean){
+        if (isSingleClick){
+            serviceListViewModel.serviceResponse.specifications =
+                specifications.filter { it.modifierId.toString() == childItem.id.toString() && it.type != 1 }
+            calculateCardAMount()
+            typeTwoAdapter.setData(serviceListViewModel.serviceResponse.specifications.sortedBy { it.sequenceNumber }
+                .filter { it.isAssociated == true } as ArrayList<SpecificationsItem>)
+        }else{
+            calculateCardAMount()
         }
     }
 

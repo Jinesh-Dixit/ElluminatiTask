@@ -89,5 +89,8 @@ data class ListItem(
 	@field:SerializedName("is_default_selected")
 	var isDefaultSelected: Boolean = false,
 
-	var count:Int = 1
+	var count:Int = 1,
+	var isItemRequired : Boolean = false,
+	var isUserCanAddSpecificationQuantity : Boolean = false,
+	var isChildMultipleAllowed : Boolean = false
 )

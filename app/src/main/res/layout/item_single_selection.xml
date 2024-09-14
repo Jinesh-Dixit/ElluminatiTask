@@ -12,46 +12,131 @@
         android:paddingTop="@dimen/_3sdp"
         android:paddingBottom="@dimen/_3sdp">
 
-        <androidx.appcompat.widget.AppCompatRadioButton
-            android:id="@+id/rbSelection"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constrainSelection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:buttonTint="@color/color_0FB7B4"
-            android:minWidth="@dimen/space_0"
-            android:minHeight="@dimen/space_0"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/chkSelection"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:buttonTint="@color/color_0FB7B4"
+                android:minWidth="@dimen/space_0"
+                android:minHeight="@dimen/space_0"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/rbSelection"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:buttonTint="@color/color_0FB7B4"
+                android:minWidth="@dimen/space_0"
+                android:minHeight="@dimen/space_0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/space_0"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_2sdp"
             android:textColor="@color/black"
             android:textSize="@dimen/_11ssp"
-            android:textStyle="bold"
-            android:alpha="0.8"
-            app:layout_constraintBottom_toBottomOf="@id/rbSelection"
-            app:layout_constraintStart_toEndOf="@+id/rbSelection"
-            app:layout_constraintTop_toTopOf="@id/rbSelection"
-            tools:text="test" />
+            android:alpha="0.7"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/llEnd"
+            app:layout_constraintStart_toEndOf="@+id/constrainSelection"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="tealsdjfl asdlkfj sadljf lasjd lkfjasdlk jsfl jsaldkjflaksdj lkjsd lkj idfjasdl jsaaf lkjasdfas asjd lajsd lj sfst" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvPrice"
+        <LinearLayout
+            android:id="@+id/llEnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.5"
-            android:paddingEnd="@dimen/space_0"
+            android:gravity="center"
             android:paddingStart="@dimen/_10ssp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_11ssp"
-            android:textStyle="normal"
-            app:layout_constraintBottom_toBottomOf="@id/rbSelection"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintStart_toEndOf="@+id/tvTitle"
-            app:layout_constraintTop_toTopOf="@id/rbSelection"
-            tools:text="test" />
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <LinearLayout
+                android:id="@+id/llPlusMinus"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_25sdp"
+                android:background="@drawable/bg_round_blue"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/imgMinus"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_marginEnd="@dimen/_2sdp"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:paddingStart="@dimen/_4sdp"
+                    android:paddingEnd="@dimen/_1sdp"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:paddingBottom="@dimen/_2sdp"
+                    android:src="@drawable/ic_minus"
+                    app:tint="@color/black" />
+
+                <View
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_0FB7B4" />
+
+                <TextView
+                    android:id="@+id/tvCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:text="1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="normal" />
+
+                <View
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_0FB7B4" />
+
+                <ImageView
+                    android:id="@+id/imgPlus"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_marginEnd="@dimen/_2sdp"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:paddingStart="@dimen/_1sdp"
+                    android:paddingEnd="@dimen/_4sdp"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:paddingBottom="@dimen/_2sdp"
+                    android:src="@drawable/ic_plus"
+                    app:tint="@color/black" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:alpha="0.5"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11ssp"
+                android:textStyle="normal"
+                tools:text="test" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
