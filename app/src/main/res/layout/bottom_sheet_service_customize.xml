@@ -74,26 +74,10 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:itemCount="1"
-                        tools:listitem="@layout/item_main_service"
-                        tools:text="@string/home_cleaning" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvTypeTwo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
-                        android:paddingStart="@dimen/_2sdp"
-                        android:paddingEnd="@dimen/_2sdp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/rvTypeOne"
-                        app:layout_constraintVertical_bias="0"
                         tools:itemCount="1"
                         tools:listitem="@layout/item_main_service"
                         tools:text="@string/home_cleaning" />
-
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.core.widget.NestedScrollView>

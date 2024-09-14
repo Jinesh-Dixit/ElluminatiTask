@@ -3,6 +3,7 @@ package com.example.servicelist.ui.activity
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
@@ -36,7 +37,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var serviceListViewModel: ServiceListViewModel
     private lateinit var serviceResponse: ServiceResponse
     private var specifications: List<SpecificationsItem> = arrayListOf()
-    private lateinit var typeTwoAdapter: ItemListAdapter
     private lateinit var typeOneAdapter: ItemListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -198,7 +198,7 @@ class MainActivity : AppCompatActivity() {
                         serviceResponse.price,
                         serviceResponse.name,
                         serviceResponse.id,
-                        typeTwoAdapter.itemList as ArrayList<SpecificationsItem> + typeOneAdapter.itemList as ArrayList<SpecificationsItem>
+                        typeOneAdapter.itemList as ArrayList<SpecificationsItem> + typeOneAdapter.itemList as ArrayList<SpecificationsItem>
                     ), onlyPrice() + serviceResponse.price?.toDouble()!!
                 )
 
@@ -215,7 +215,6 @@ class MainActivity : AppCompatActivity() {
         bottomSheetServiceCustomizeBinding.tvCount.text =
             serviceListViewModel.mainCount.toString()
         filterValues()
-        typeTwoAdapter()
         typeOneAdapter()
     }
 
@@ -291,10 +290,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun typeOneAdapter() {
+        specifications = serviceListViewModel.specifications.sortedBy { it.sequenceNumber }.filter {it.isParentAssociate==true }
+        val id = serviceListViewModel.specifications[0].list[0].id
+        serviceListViewModel.specifications.forEach { specificationsItems->
+            if (specificationsItems.isAssociated == true && specificationsItems.modifierId == id ){
+                (specifications as ArrayList).add(specificationsItems)
+            }
+        }
         typeOneAdapter =
             ItemListAdapter(
-                serviceListViewModel.specifications.sortedBy { it.sequenceNumber }
-                    .filter { it.isParentAssociate == true } as ArrayList<SpecificationsItem>,
+                specifications,
                 this,
                 itemClickChild = ::calculateItemAmountChildClick
             )
@@ -304,27 +309,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun typeTwoAdapter() {
-        typeTwoAdapter =
-            ItemListAdapter(
-                serviceListViewModel.serviceResponse.specifications.sortedBy { it.sequenceNumber }
-                    .filter { it.isAssociated == true } as ArrayList<SpecificationsItem>,
-                this,
-                itemClickChild = ::calculateItemAmountChildClick
-            )
-
-        bottomSheetServiceCustomizeBinding.rvTypeTwo.apply {
-            adapter = typeTwoAdapter
-        }
-    }
-
     private fun calculateItemAmountChildClick(childItem : ListItem,isSingleClick : Boolean){
         if (isSingleClick){
-            serviceListViewModel.serviceResponse.specifications =
-                specifications.filter { it.modifierId.toString() == childItem.id.toString() && it.type != 1 }
+            specifications = serviceListViewModel.specifications.sortedBy { it.sequenceNumber }.filter {it.isParentAssociate==true }
+            val id = childItem.id
+            serviceListViewModel.specifications.forEach { specificationsItems->
+                if (specificationsItems.isAssociated == true && specificationsItems.modifierId == id ){
+                    (specifications as ArrayList).add(specificationsItems)
+                }
+            }
             calculateCardAMount()
-            typeTwoAdapter.setData(serviceListViewModel.serviceResponse.specifications.sortedBy { it.sequenceNumber }
-                .filter { it.isAssociated == true } as ArrayList<SpecificationsItem>)
+            typeOneAdapter.setData(specifications as ArrayList)
         }else{
             calculateCardAMount()
         }
@@ -350,9 +345,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        for (i in serviceListViewModel.serviceResponse.specifications) {
+        for (i in specifications) {
             if (i.type == 2) {
-                for (j in i.list as ArrayList<ListItem>) {
+                for (j in i.list) {
                     if (j.isDefaultSelected) {
                         price += ((j.price?.toDouble()!!) * j.count)
                     }
@@ -363,7 +358,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkIsRequiredSelected(): Boolean {
-        for (i in typeTwoAdapter.itemList as ArrayList<SpecificationsItem> ) {
+        for (i in typeOneAdapter.itemList as ArrayList<SpecificationsItem> ) {
             if (i.isRequired) {
                 var isSelected = false
                 for (j in i.list) {
