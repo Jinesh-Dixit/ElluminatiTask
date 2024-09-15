@@ -198,7 +198,7 @@ class MainActivity : AppCompatActivity() {
                         serviceResponse.price,
                         serviceResponse.name,
                         serviceResponse.id,
-                        typeOneAdapter.itemList as ArrayList<SpecificationsItem> + typeOneAdapter.itemList as ArrayList<SpecificationsItem>
+                        typeOneAdapter.itemList as ArrayList<SpecificationsItem>
                     ), onlyPrice() + serviceResponse.price?.toDouble()!!
                 )
 
@@ -318,6 +318,7 @@ class MainActivity : AppCompatActivity() {
                     (specifications as ArrayList).add(specificationsItems)
                 }
             }
+            serviceListViewModel.serviceResponse.specifications = specifications
             calculateCardAMount()
             typeOneAdapter.setData(specifications as ArrayList)
         }else{
@@ -345,7 +346,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        for (i in specifications) {
+        for (i in serviceListViewModel.serviceResponse.specifications) {
             if (i.type == 2) {
                 for (j in i.list) {
                     if (j.isDefaultSelected) {
